@@ -50,6 +50,28 @@ app = FastAPI(
 
 
 # ---------------------------------------------------------------------------
+# GET /v1/models — required by Open WebUI to discover available models
+# ---------------------------------------------------------------------------
+
+@app.get("/v1/models")
+async def list_models():
+    model = os.getenv("LLM_CHOICE", "gpt-4o-mini")
+    agent_name = os.getenv("AGENT_NAME", "Knowledge Assistant")
+    return {
+        "object": "list",
+        "data": [
+            {
+                "id": model,
+                "object": "model",
+                "created": 1700000000,
+                "owned_by": "agent-one",
+                "name": agent_name,
+            }
+        ],
+    }
+
+
+# ---------------------------------------------------------------------------
 # POST /chat — custom SSE format
 # ---------------------------------------------------------------------------
 
